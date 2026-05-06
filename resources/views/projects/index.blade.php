@@ -11,87 +11,65 @@
     </x-slot>
 
     <div class="precision-container">
-        <!-- Stats Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 precision-gap-16 precision-mb-24">
-            <div class="precision-card">
-                <div class="precision-flex">
-                    <div class="icon-wrapper bg-blue-50">
-                        <i class="fas fa-folder-open text-blue-600"></i>
-                    </div>
-                    <div>
-                        <h4 class="precision-caption uppercase font-bold tracking-wider">Total de Projetos</h4>
-                        <p class="precision-heading-3">{{ \App\Models\Project::count() }}</p>
-                    </div>
+        @if(session('success'))
+            <div class="precision-alert precision-alert-success">
+                <i class="fas fa-check-circle text-2xl"></i>
+                <div>
+                    <h4 class="font-bold">Sucesso!</h4>
+                    <p class="text-sm">{{ session('success') }}</p>
                 </div>
             </div>
-            <div class="precision-card">
-                <div class="precision-flex">
-                    <div class="icon-wrapper" style="background-color: #ecfdf5;">
-                        <i class="fas fa-file-alt text-emerald-600"></i>
-                    </div>
-                    <div>
-                        <h4 class="precision-caption uppercase font-bold tracking-wider">Documentos Gerados</h4>
-                        <p class="precision-heading-3">--</p>
-                    </div>
-                </div>
-            </div>
-            <div class="precision-card">
-                <div class="precision-flex">
-                    <div class="icon-wrapper" style="background-color: #fffbeb;">
-                        <i class="fas fa-clock text-amber-600"></i>
-                    </div>
-                    <div>
-                        <h4 class="precision-caption uppercase font-bold tracking-wider">Pendentes</h4>
-                        <p class="precision-heading-3">--</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @endif
 
-        <!-- Recent Projects Table -->
         <div class="precision-card">
             <div class="precision-card-header precision-flex-between">
                 <div class="precision-flex">
                     <div class="icon-wrapper bg-blue-50">
-                        <i class="fas fa-list text-blue-600"></i>
+                        <i class="fas fa-folder-open text-blue-600"></i>
                     </div>
-                    <h2 class="precision-heading-5">Projetos Recentes</h2>
-                </div>
-                <div class="actions">
-                    <a href="{{ route('projects.index') }}" class="precision-btn precision-btn-secondary">Ver Todos</a>
+                    <h2 class="precision-heading-5">Todos os Projetos</h2>
                 </div>
             </div>
             
             <div class="precision-datatable-wrapper">
-                <table class="precision-table">
+                <table class="precision-table" id="projects-table">
                     <thead>
                         <tr>
                             <th>Código</th>
                             <th>Obra</th>
-                            <th>Cidade</th>
+                            <th>Proprietário</th>
+                            <th>Localização</th>
                             <th class="text-right">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse(\App\Models\Project::latest()->take(5)->get() as $project)
+                        @forelse($projects as $project)
                             <tr>
                                 <td><span class="precision-badge precision-badge-primary">{{ $project->codigo_interno }}</span></td>
-                                <td class="font-bold">{{ $project->nome_obra }}</td>
-                                <td>{{ $project->cidade }}</td>
+                                <td class="font-bold text-gray-900">{{ $project->nome_obra }}</td>
+                                <td>{{ $project->nome_proprietario ?? '---' }}</td>
+                                <td>{{ $project->cidade }} - {{ $project->estado }}</td>
                                 <td class="text-right">
-                                    <div class="precision-flex-center gap-2 justify-end">
+                                    <div class="precision-flex-center gap-1 justify-end">
                                         <a href="{{ route('projects.documents', $project) }}" class="precision-btn precision-btn-ghost" title="Documentos">
                                             <i class="fas fa-file-word text-blue-600"></i>
                                         </a>
                                         <a href="{{ route('projects.edit', $project) }}" class="precision-btn precision-btn-ghost" title="Editar">
                                             <i class="fas fa-edit text-amber-500"></i>
                                         </a>
+                                        <form action="{{ route('projects.destroy', $project) }}" method="POST" class="inline-block" onsubmit="return confirm('Tem certeza que deseja excluir este projeto?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="precision-btn precision-btn-ghost" title="Excluir">
+                                                <i class="fas fa-trash-alt text-red-500"></i>
+                                            </button>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="text-center precision-p-24">
+                                <td colspan="5" class="text-center precision-p-24">
                                     <div class="precision-alert precision-alert-warning justify-center mb-0">
                                         <i class="fas fa-exclamation-triangle"></i>
                                         Nenhum projeto cadastrado. <a href="{{ route('projects.create') }}" class="font-bold underline ml-1">Clique aqui para criar o primeiro.</a>
