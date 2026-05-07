@@ -8,26 +8,20 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/premium.css') }}">
-    
-    <style>
-        /* Fallback for asset helper if not linked yet */
-        @import url('/resources/css/premium.css');
-    </style>
 </head>
 <body>
     <div class="bg-gradient"></div>
-    <div class="glow" style="top: 10%; left: 10%;"></div>
-    <div class="glow" style="bottom: 10%; right: 10%;"></div>
+    <div class="glow" style="top: 0%; left: 0%;"></div>
+    <div class="glow" style="bottom: 0%; right: 0%;"></div>
 
     <div class="container">
         <nav>
             <a href="/" class="logo-container">
-                <img src="{{ asset('build/assets/logo.png') }}" alt="Ignea Logo" class="logo-img" style="width: 100px; height: 100px;">
-       
+                <img src="{{ asset('img/logo1.png') }}" alt="Ignea Logo" class="logo-img" style="width: 80px; height: 80px; object-fit: contain;">
             </a>
             <div class="nav-links">
                 @if (Route::has('login'))
@@ -36,7 +30,7 @@
                     @else
                         <a href="{{ route('login') }}">Login</a>
                         @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
+                            <a href="{{ route('register') }}" class="btn btn-primary" style="padding: 8px 16px;">Register</a>
                         @endif
                     @endauth
                 @endif
@@ -54,19 +48,20 @@
         </header>
 
         <section id="features" class="features">
-            <div class="card">
-                <h3>Ignea</h3>
+            <div class="precision-card">
+                <h5 class="precision-heading-5">Ignea</h5>
                 <p>Construído sobre o framework PHP mais elegante do mundo, garantindo escalabilidade e manutenibilidade.</p>
             </div>
-            <div class="card">
-                <h3>Segurança Nativa</h3>
+            <div class="precision-card">
+                <h5 class="precision-heading-5">Segurança Nativa</h5>
                 <p>Sistema de autenticação integrado com Laravel Breeze, protegendo seus dados desde o primeiro dia.</p>
             </div>
-            <div class="card">
-                <h3>Design Premium</h3>
-                <p>Interface focada na experiência do usuário, com estética moderna, animações fluidas e modo escuro nativo.</p>
+            <div class="precision-card">
+                <h5 class="precision-heading-5">Design Premium</h5>
+                <p>Interface focada na experiência do usuário, com estética moderna, animações fluidas e modo claro nativo.</p>
             </div>
         </section>
     </div>
 </body>
 </html>
+
